@@ -57,7 +57,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
 
     public function __construct()
     {
-        setlocale(LC_ALL, 'zh_CN.UTF-8');
+        setlocale(LC_ALL, 'en_US.UTF-8');
 
         $this->initialize([]);
     }
@@ -142,6 +142,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
 
     public function output($quality = 1)
     {
+        ob_end_clean();
         header('Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate');
         header('Cache-Control: post-check=0, pre-check=0', false);
         header('Pragma: no-cache');
@@ -299,10 +300,9 @@ class CaptchaBuilder implements CaptchaBuilderInterface
     {
         list($red,$green,$blue) = $this->getRandColor();
         $increase = 30 + mt_rand(1,254);
-
-        $red = min(255,$red - $increase);
-        $green = min(255, $green - $increase);
-        $blue = min(255, $blue - $increase);
+        $red = min(255,abs($red - $increase));
+        $green  = min(255,abs($green - $increase));
+        $blue  = min(255,abs($blue - $increase));
 
         return [$red,$green,$blue];
     }
